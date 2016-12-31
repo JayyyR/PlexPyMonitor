@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PlexPyMonitor</string>
+    <string name="ip_address">IP Address</string>
+    <string name="port">Port</string>
+    <string name="auth_key">Auth Key</string>
+    <string name="userdetails_title">Enter Details</string>
+</resources>
