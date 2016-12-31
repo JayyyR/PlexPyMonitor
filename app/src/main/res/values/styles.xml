@@ -11,5 +11,9 @@
     <style name="UserDetailsLabel" parent="android:TextAppearance.Small">
         <item name="android:textColor">@color/colorAccent</item>
     </style>
+    
+    <style name="PlexButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/colorAccent</item>
+    </style>
 
 </resources>

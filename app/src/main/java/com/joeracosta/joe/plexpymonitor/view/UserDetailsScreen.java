@@ -1,10 +1,14 @@
 package com.joeracosta.joe.plexpymonitor.view;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.joeracosta.joe.plexpymonitor.R;
+import com.joeracosta.joe.plexpymonitor.databinding.ScreenUserdetailsBinding;
+import com.joeracosta.joe.plexpymonitor.viewmodels.UserDetailsViewModel;
 import com.joeracosta.library.Screen;
 import com.joeracosta.library.ViewFactory;
 
@@ -15,6 +19,8 @@ import com.joeracosta.library.ViewFactory;
 public class UserDetailsScreen extends Screen {
 
     private Host mHost;
+    private UserDetailsViewModel mViewModel;
+    private ScreenUserdetailsBinding mBinding;
 
     public class Factory extends ViewFactory {
 
@@ -29,11 +35,14 @@ public class UserDetailsScreen extends Screen {
     }
 
     @Override
-    public void onViewAdded(View child) {
-        super.onViewAdded(child);
+    public void onScreenAttached() {
+        super.onScreenAttached();
+        mBinding = DataBindingUtil.bind(this);
         mHost = (Host) getParent();
-
         mHost.setAppBarTitle(getContext().getString(R.string.userdetails_title));
+        mViewModel = new UserDetailsViewModel();
+
+        mBinding.setViewModel(mViewModel);
     }
 
     @Override
