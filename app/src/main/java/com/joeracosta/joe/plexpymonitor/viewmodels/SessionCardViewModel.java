@@ -45,6 +45,18 @@ public class SessionCardViewModel extends BaseObservable {
         });
     }
 
+    @BindingAdapter({"bind:userImageUrl"})
+    public static void loadUserImage(ImageView view, String imageUrl) {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
+    }
+
+    @Bindable
+    public String getUserThumbUrl() {
+        return mSession.getUserThumbUrl();
+    }
+
     @Bindable
     public String getThumbUrl() {
         return mSession.getArtUrl();
