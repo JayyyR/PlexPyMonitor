@@ -33,7 +33,6 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:text="@{viewModel.grandParentTitle}"
                 android:textColor="@color/colorPrimaryLight"
                 android:visibility="@{viewModel.subtitleVisibility}" />
@@ -41,6 +40,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:adjustViewBounds="true"
                 app:imageUrl="@{viewModel.thumbUrl}" />
 

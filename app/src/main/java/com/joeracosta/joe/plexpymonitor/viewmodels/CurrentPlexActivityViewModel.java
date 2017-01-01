@@ -88,13 +88,8 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
 
 
     private void setAdapter(ArrayList<CurrentPlexActivity.Response.Data.Session> sessions){
-        if (sessions == null || sessions.isEmpty()){
-            mNoSessions = true;
-            notifyPropertyChanged(BR.noSessions);
-            return;
-        }
         mBinding.sessionList.setAdapter(new CurrentSessionsAdapter(sessions));
-        mNoSessions = false;
+        mNoSessions = sessions.isEmpty();
         notifyPropertyChanged(BR.noSessions);
     }
 
