@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.joeracosta.joe.plexpymonitor.events.AuthResponseEvent;
+import com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen;
 import com.joeracosta.joe.plexpymonitor.view.Host;
 import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
 import com.joeracosta.library.Map.ViewMap;
@@ -18,7 +19,7 @@ public class MapHost extends AppCompatActivity implements Host {
 
     private static final String VIEW_MAP_KEY = "com.joeracosta.VIEW_MAP_KEY";
 
-    private ViewMap map;
+    private ViewMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +35,17 @@ public class MapHost extends AppCompatActivity implements Host {
         editor.apply();
         //
 
-        map = ViewMap.create((ViewGroup) findViewById(R.id.app_content));
+        mMap = ViewMap.create((ViewGroup) findViewById(R.id.app_content));
 
         if (savedInstanceState != null){
-            map.rebuildFromBundle(savedInstanceState, VIEW_MAP_KEY);
+            mMap.rebuildFromBundle(savedInstanceState, VIEW_MAP_KEY);
         } else {
 
             //shared pref check
             if (!authenticated()){
-                map.show(R.id.userdetails_screen, new UserDetailsScreen.Factory());
+                mMap.show(R.id.userdetails_screen, new UserDetailsScreen.Factory());
             } else {
+                mMap.show(R.id.current_activity_screen, new CurrentPlexActivityScreen.Factory());
             }
 
         }
@@ -51,7 +53,7 @@ public class MapHost extends AppCompatActivity implements Host {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        map.saveToBundle(outState, VIEW_MAP_KEY);
+        mMap.saveToBundle(outState, VIEW_MAP_KEY);
         super.onSaveInstanceState(outState);
     }
 
@@ -82,6 +84,9 @@ public class MapHost extends AppCompatActivity implements Host {
             storeStringInPref(getString(R.string.ip_address_key), event.ipAddress);
             storeStringInPref(getString(R.string.port_key), event.port);
             storeStringInPref(getString(R.string.auth_key_key), event.apiKey);
+
+            mMap.clear();
+            mMap.show(R.id.current_activity_screen, new CurrentPlexActivityScreen.Factory());
         }
     }
 
