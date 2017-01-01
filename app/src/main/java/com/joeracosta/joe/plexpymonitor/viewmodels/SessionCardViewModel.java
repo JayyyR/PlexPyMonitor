@@ -3,6 +3,7 @@ package com.joeracosta.joe.plexpymonitor.viewmodels;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.support.percent.PercentLayoutHelper;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -52,6 +53,18 @@ public class SessionCardViewModel extends BaseObservable {
                 .into(view);
     }
 
+    @BindingAdapter("app:layout_widthPercent")
+    public static void setWidthPercent(View view, float width) {
+        PercentLayoutHelper.PercentLayoutParams params =(PercentLayoutHelper.PercentLayoutParams) view.getLayoutParams();
+        PercentLayoutHelper.PercentLayoutInfo info = params.getPercentLayoutInfo();
+        info.widthPercent = width;
+    }
+
+    @Bindable
+    public float getProgressPercent() {
+        return mSession.getProgressPercent()/100;
+    }
+
     @Bindable
     public String getUserThumbUrl() {
         return mSession.getUserThumbUrl();
@@ -82,5 +95,20 @@ public class SessionCardViewModel extends BaseObservable {
     @Bindable
     public String getUser(){
         return mSession.getUser();
+    }
+
+    @Bindable
+    public String getYear(){
+        return mSession.getYear();
+    }
+
+    @Bindable
+    public String getTranscodeDecision(){
+        if (mSession.getTranscodeDecision().length() > 1) {
+            return Character.toUpperCase(mSession.getTranscodeDecision().charAt(0))
+                    + mSession.getTranscodeDecision().substring(1);
+        } else {
+            return mSession.getTranscodeDecision();
+        }
     }
 }

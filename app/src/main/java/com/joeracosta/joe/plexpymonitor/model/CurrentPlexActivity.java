@@ -69,6 +69,27 @@ public class CurrentPlexActivity implements Serializable {
                 @SerializedName("grandparent_title")
                 String grandParentTitle;
 
+                @SerializedName("progress_percent")
+                float progressPercent;
+
+                @SerializedName("year")
+                String year;
+
+                @SerializedName("transcode_decision")
+                String transcodeDecision;
+
+                public String getTranscodeDecision() {
+                    return transcodeDecision;
+                }
+
+                public String getYear() {
+                    return year;
+                }
+
+                public float getProgressPercent() {
+                    return progressPercent;
+                }
+
                 public String getGrandParentTitle() {
                     return grandParentTitle;
                 }

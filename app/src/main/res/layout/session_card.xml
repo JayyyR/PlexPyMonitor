@@ -37,34 +37,69 @@
                 android:textColor="@color/colorPrimaryLight"
                 android:visibility="@{viewModel.subtitleVisibility}" />
 
-            <ImageView
+            <android.support.percent.PercentRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:adjustViewBounds="true"
-                app:imageUrl="@{viewModel.thumbUrl}" />
+                android:layout_marginTop="2dp">
 
-            <LinearLayout
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    app:imageUrl="@{viewModel.thumbUrl}" />
+
+                <ImageView
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="5dp"
+                    android:background="@color/colorAccent"
+                    app:layout_widthPercent="@{viewModel.progressPercent}" />
+
+            </android.support.percent.PercentRelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="32dp"
+                    android:id="@+id/user_thumb"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:adjustViewBounds="true"
                     app:userImageUrl="@{viewModel.userThumbUrl}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/user_thumb"
+                    android:layout_toEndOf="@id/user_thumb"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_gravity="bottom"
                     android:text="@{viewModel.user}" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@{viewModel.year}"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:layout_below="@id/year"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="@{viewModel.transcodeDecision}"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
