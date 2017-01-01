@@ -14,7 +14,11 @@ public class CurrentPlexActivityEvent {
 
     public CurrentPlexActivityEvent(CurrentPlexActivity response) {
         this.response = response;
-        success = response.isSuccess();
+        if (response == null){
+            success = false;
+        } else {
+            success = response.isSuccess();
+        }
     }
 
     public CurrentPlexActivityEvent(boolean success) {

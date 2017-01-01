@@ -52,7 +52,8 @@ public class MapHost extends AppCompatActivity implements Host {
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 PyAPI.initialize(sharedPref.getString(getString(R.string.auth_key_key), ""),
                         sharedPref.getString(getString(R.string.ip_address_key), ""),
-                        sharedPref.getString(getString(R.string.port_key), ""));
+                        sharedPref.getString(getString(R.string.port_key), ""),
+                        sharedPref.getString(getString(R.string.http_root_key), ""));
 
                 mMap.show(R.id.current_activity_screen, new CurrentPlexActivityScreen.Factory());
             }
@@ -93,6 +94,7 @@ public class MapHost extends AppCompatActivity implements Host {
             storeStringInPref(getString(R.string.ip_address_key), event.ipAddress);
             storeStringInPref(getString(R.string.port_key), event.port);
             storeStringInPref(getString(R.string.auth_key_key), event.apiKey);
+            storeStringInPref(getString(R.string.http_root_key), event.httpRoot);
 
             mMap.clear();
             mMap.show(R.id.current_activity_screen, new CurrentPlexActivityScreen.Factory());

@@ -19,12 +19,14 @@ public class PyAPI {
     private static String sAuthKey;
     private static String sIPAddress;
     private static String sPort;
+    private static String sHttpRoot;
     private static PlexPyAPI sPlexPyApi;
 
 
-    public static void initialize(String apikey, String ip, String port) {
+    public static void initialize(String apikey, String ip, String port, String httpRoot) {
         sAuthKey = apikey;
         sIPAddress = ip;
+        sHttpRoot = httpRoot;
         sPort = port;
     }
 
@@ -34,6 +36,7 @@ public class PyAPI {
         sIPAddress = null;
         sPlexPyApi = null;
         sRetroFit = null;
+        sHttpRoot = null;
     }
 
     public static PlexPyAPI getPlexPyApi() {
@@ -52,7 +55,14 @@ public class PyAPI {
                 throw new RuntimeException("Must set ip, auth, and port");
             }
 
-            sBaseUrl = "http://" + sIPAddress + ":" + sPort + "/api/v2/";
+            sBaseUrl = "http://" + sIPAddress + ":" + sPort;
+
+            if (sHttpRoot != null && !sHttpRoot.isEmpty()) {
+                sBaseUrl += "/" + sHttpRoot;
+            }
+
+            sBaseUrl += "/api/v2/";
+
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addNetworkInterceptor(new StethoInterceptor())

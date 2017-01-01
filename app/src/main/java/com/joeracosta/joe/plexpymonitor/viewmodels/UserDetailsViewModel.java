@@ -24,6 +24,7 @@ public class UserDetailsViewModel extends BaseObservable {
 
     private String mAuthKey;
     private String mIPAddress;
+    private String mHTTPRoot;
     private String mPort;
     private UserDetailsScreen mView;
     private boolean mIsLoading;
@@ -39,10 +40,14 @@ public class UserDetailsViewModel extends BaseObservable {
             return;
         }
 
+        if (mHTTPRoot == null){
+            mHTTPRoot = "";
+        }
+
         mIsLoading = true;
         notifyChange();
 
-        AuthenticationModel.testAuthentication(mIPAddress, mPort, mAuthKey);
+        AuthenticationModel.testAuthentication(mIPAddress, mPort, mAuthKey, mHTTPRoot);
     }
 
     public TextWatcher ipWatcher = new TextWatcherAdapter() {
@@ -69,6 +74,14 @@ public class UserDetailsViewModel extends BaseObservable {
         }
     };
 
+    public TextWatcher httpRootWatcher = new TextWatcherAdapter() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            super.afterTextChanged(s);
+            mHTTPRoot = s.toString();
+        }
+    };
+
     @Bindable
     public int getLoadingVisibility() {
         return mIsLoading ? View.VISIBLE : View.GONE;
@@ -91,10 +104,15 @@ public class UserDetailsViewModel extends BaseObservable {
         return mPort;
     }
 
-    public void setData(String ip, String port, String auth) {
+    public String getHttpRoot() {
+        return mHTTPRoot;
+    }
+
+    public void setData(String ip, String port, String auth, String httpRoot) {
         mIPAddress = ip;
         mPort = port;
         mAuthKey = auth;
+        mHTTPRoot = httpRoot;
     }
 
     public void destroy(){

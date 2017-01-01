@@ -37,17 +37,18 @@ public class AuthenticationModel {
 
     }
 
-    public static void testAuthentication(String ipAddress, String port, String authKey){
-        PyAPI.initialize(authKey, ipAddress, port);
+    public static void testAuthentication(String ipAddress, String port, String authKey, String httpRoot){
+        PyAPI.initialize(authKey, ipAddress, port, httpRoot);
 
         try {
             PyAPI.getPlexPyApi().testAPI().enqueue(new Callback<AuthenticationModel>() {
                 @Override
                 public void onResponse(Call<AuthenticationModel> call, retrofit2.Response<AuthenticationModel> response) {
 
-                    if (response.body().isSuccess()) {
-                        EventBus.getDefault().post(new AuthResponseEvent(true, authKey, ipAddress, port));
+                    if (response.body() != null && response.body().isSuccess()) {
+                        EventBus.getDefault().post(new AuthResponseEvent(true, authKey, ipAddress, port, httpRoot));
                     } else {
+                        EventBus.getDefault().post(new AuthResponseEvent(false));
                         PyAPI.clear();
                     }
                 }

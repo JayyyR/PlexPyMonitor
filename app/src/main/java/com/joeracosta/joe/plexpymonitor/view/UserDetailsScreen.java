@@ -21,6 +21,7 @@ public class UserDetailsScreen extends Screen {
     private static final String BUNDLE_IP_KEY = "com.joeracosta.bundle.ip";
     private static final String BUNDLE_PORT_KEY = "com.joeracosta.bundle.port";
     private static final String BUNDLE_AUTH_KEY = "com.joeracosta.bundle.auth";
+    private static final String BUNDLE_HTTP_ROOT_KEY = "com.joeracosta.bundle.httproot";
 
     private Host mHost;
     private UserDetailsViewModel mViewModel;
@@ -50,7 +51,8 @@ public class UserDetailsScreen extends Screen {
         if (mSavedBundle != null){
             mViewModel.setData(mSavedBundle.getString(BUNDLE_IP_KEY),
                     mSavedBundle.getString(BUNDLE_PORT_KEY),
-                    mSavedBundle.getString(BUNDLE_AUTH_KEY));
+                    mSavedBundle.getString(BUNDLE_AUTH_KEY),
+                    mSavedBundle.getString(BUNDLE_HTTP_ROOT_KEY));
             mSavedBundle = null;
         }
 
@@ -75,6 +77,7 @@ public class UserDetailsScreen extends Screen {
         bundle.putString(BUNDLE_IP_KEY, mViewModel.getIP());
         bundle.putString(BUNDLE_PORT_KEY, mViewModel.getPort());
         bundle.putString(BUNDLE_AUTH_KEY, mViewModel.getAuth());
+        bundle.putString(BUNDLE_HTTP_ROOT_KEY, mViewModel.getHttpRoot());
         return super.onSaveState(bundle);
     }
 
