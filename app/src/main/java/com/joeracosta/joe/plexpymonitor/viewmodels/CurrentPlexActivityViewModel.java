@@ -7,6 +7,7 @@ import android.view.View;
 import com.joeracosta.joe.plexpymonitor.databinding.ScreenCurrentActivityBinding;
 import com.joeracosta.joe.plexpymonitor.events.CurrentPlexActivityEvent;
 import com.joeracosta.joe.plexpymonitor.model.CurrentPlexActivity;
+import com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen;
 import com.joeracosta.joe.plexpymonitor.view.adapters.CurrentSessionsAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,14 +22,34 @@ import java.util.ArrayList;
 public class CurrentPlexActivityViewModel extends BaseObservable {
 
     private boolean mIsLoading;
-    private ArrayList<CurrentPlexActivity.Response.Data.Session> mSessions;
     private ScreenCurrentActivityBinding mBinding;
+    private CurrentPlexActivityScreen mView;
+    private boolean mNoSessions;
+    private boolean mErrorLoading;
 
-    public CurrentPlexActivityViewModel(ScreenCurrentActivityBinding binding) {
-        EventBus.getDefault().register(this);
+
+    /**
+     * Constructor when you need to load the sessions
+     */
+    public CurrentPlexActivityViewModel(ScreenCurrentActivityBinding binding, CurrentPlexActivityScreen screen) {
+        initialize(binding, screen);
         mIsLoading = true;
-        mBinding = binding;
         CurrentPlexActivity.getCurrentActivity();
+    }
+
+    /**
+     * Constructor for when sessions are coming from a save state
+     */
+    public CurrentPlexActivityViewModel(ScreenCurrentActivityBinding binding, CurrentPlexActivityScreen screen,
+                                        ArrayList<CurrentPlexActivity.Response.Data.Session> sessions){
+        initialize(binding, screen);
+        setAdapter(sessions);
+    }
+
+    private void initialize(ScreenCurrentActivityBinding binding, CurrentPlexActivityScreen screen){
+        EventBus.getDefault().register(this);
+        mBinding = binding;
+        mView = screen;
     }
 
     public void destroy(){
@@ -39,25 +60,27 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
     public void onCurrentActivityLoaded(CurrentPlexActivityEvent event){
 
         if (event.success){
-            setSessions(event.response.getSessions());
+            mView.setSessions(event.response.getSessions());
+            setAdapter(event.response.getSessions());
+            mErrorLoading = false;
         } else {
-            //todo failure
+            mErrorLoading = true;
         }
 
         mIsLoading = false;
         notifyChange();
-
     }
 
 
-    private void setSessions(ArrayList<CurrentPlexActivity.Response.Data.Session> sessions){
-
+    private void setAdapter(ArrayList<CurrentPlexActivity.Response.Data.Session> sessions){
         if (sessions == null || sessions.isEmpty()){
-            //todo no sessions
+            mNoSessions = true;
+            notifyChange();
             return;
         }
-        mSessions = sessions;
-        mBinding.sessionList.setAdapter(new CurrentSessionsAdapter(mSessions));
+        mBinding.sessionList.setAdapter(new CurrentSessionsAdapter(sessions));
+        mNoSessions = false;
+        notifyChange();
     }
 
     @Bindable
@@ -68,6 +91,16 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
     @Bindable
     public int getContentVisibility(){
         return !mIsLoading ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getNoSessions() {
+        return mNoSessions ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getErrorLoading() {
+        return mErrorLoading ? View.VISIBLE : View.GONE;
     }
 
 }

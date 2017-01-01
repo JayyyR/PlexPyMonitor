@@ -12,4 +12,6 @@
     <string name="auth_key_key">shared_pref_auth</string>
     <string name="authenication_failed">Authentication failed. Please verify you have entered the correct values.</string>
     <string name="current_sessions">Current Sessions</string>
+    <string name="no_one_watching">No One\'s Watching!</string>
+    <string name="error_loading_data">Error Loading Data</string>
 </resources>

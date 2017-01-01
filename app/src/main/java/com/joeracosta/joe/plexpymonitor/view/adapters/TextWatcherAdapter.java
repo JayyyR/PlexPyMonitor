@@ -1,4 +1,4 @@
-package com.joeracosta.joe.plexpymonitor.view;
+package com.joeracosta.joe.plexpymonitor.view.adapters;
 
 import android.text.Editable;
 import android.text.TextWatcher;

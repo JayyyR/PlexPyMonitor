@@ -7,6 +7,7 @@ import com.joeracosta.joe.plexpymonitor.network.PyAPI;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -17,7 +18,7 @@ import retrofit2.Response;
  * Created by jacosta on 12/31/16.
  */
 
-public class CurrentPlexActivity {
+public class CurrentPlexActivity implements Serializable {
 
     @SerializedName("response")
     Response response;
@@ -30,7 +31,7 @@ public class CurrentPlexActivity {
         return response.data.sessions;
     }
 
-    public class Response {
+    public class Response implements Serializable {
 
         @SerializedName("message")
         String message;
@@ -41,7 +42,7 @@ public class CurrentPlexActivity {
         @SerializedName("result")
         String result;
 
-        public class Data {
+        public class Data implements Serializable {
 
             @SerializedName("stream_count")
             int streamCount;
@@ -49,7 +50,7 @@ public class CurrentPlexActivity {
             @SerializedName("sessions")
             ArrayList<Session> sessions;
 
-            public class Session {
+            public class Session implements Serializable {
 
                 @SerializedName("title")
                 String title;

@@ -9,7 +9,7 @@ import android.view.View;
 import com.joeracosta.joe.plexpymonitor.R;
 import com.joeracosta.joe.plexpymonitor.events.AuthResponseEvent;
 import com.joeracosta.joe.plexpymonitor.model.AuthenticationModel;
-import com.joeracosta.joe.plexpymonitor.view.TextWatcherAdapter;
+import com.joeracosta.joe.plexpymonitor.view.adapters.TextWatcherAdapter;
 import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
 
 import org.greenrobot.eventbus.EventBus;
