@@ -20,7 +20,7 @@ public class SessionCardViewModel extends BaseObservable {
 
     @Bindable
     public String getTitle(){
-        return mSession.getTitle();
+        return mSession.getFullTitle();
     }
 
     @Bindable

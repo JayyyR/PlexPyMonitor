@@ -6,54 +6,73 @@
 
         <variable
             name="viewModel"
-            type="com.joeracosta.joe.plexpymonitor.viewmodels.CurrentPlexActivityViewModel"/>
+            type="com.joeracosta.joe.plexpymonitor.viewmodels.CurrentPlexActivityViewModel" />
     </data>
 
     <com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLight">
 
-        <FrameLayout
-            android:id="@+id/loading_screen"
-            android:visibility="@{viewModel.loadingVisibility}"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-        </FrameLayout>
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            android:layout_margin="16dp"
-            android:visibility="@{viewModel.noSessions}"
-            android:text="@string/no_one_watching"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:layout_gravity="center"
-            android:textSize="16sp"
-            android:layout_margin="16dp"
-            android:visibility="@{viewModel.errorLoading}"
-            android:text="@string/error_loading_data"/>
+                    <FrameLayout
+                        android:id="@+id/loading_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="@{viewModel.loadingVisibility}">
+
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:text="@string/no_one_watching"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.noSessions}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:text="@string/error_loading_data"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.errorLoading}" />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/session_list"
-            android:visibility="@{viewModel.contentVisibility}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/session_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="@{viewModel.contentVisibility}">
 
-        </android.support.v7.widget.RecyclerView>
+                    </android.support.v7.widget.RecyclerView>
+
+                </FrameLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
     </com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen>

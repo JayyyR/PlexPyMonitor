@@ -2,8 +2,10 @@ package com.joeracosta.joe.plexpymonitor.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.joeracosta.joe.plexpymonitor.BR;
 import com.joeracosta.joe.plexpymonitor.databinding.ScreenCurrentActivityBinding;
 import com.joeracosta.joe.plexpymonitor.events.CurrentPlexActivityEvent;
 import com.joeracosta.joe.plexpymonitor.model.CurrentPlexActivity;
@@ -50,6 +52,13 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
         EventBus.getDefault().register(this);
         mBinding = binding;
         mView = screen;
+
+
+        mBinding.refreshLayout.setOnRefreshListener(() -> {
+            CurrentPlexActivity.getCurrentActivity();
+            mBinding.refreshLayout.setRefreshing(true);
+            notifyChange();
+        });
     }
 
     public void destroy(){
@@ -58,6 +67,8 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
 
     @Subscribe
     public void onCurrentActivityLoaded(CurrentPlexActivityEvent event){
+
+        mBinding.refreshLayout.setRefreshing(false);
 
         if (event.success){
             mView.setSessions(event.response.getSessions());
@@ -75,12 +86,12 @@ public class CurrentPlexActivityViewModel extends BaseObservable {
     private void setAdapter(ArrayList<CurrentPlexActivity.Response.Data.Session> sessions){
         if (sessions == null || sessions.isEmpty()){
             mNoSessions = true;
-            notifyChange();
+            notifyPropertyChanged(BR.noSessions);
             return;
         }
         mBinding.sessionList.setAdapter(new CurrentSessionsAdapter(sessions));
         mNoSessions = false;
-        notifyChange();
+        notifyPropertyChanged(BR.noSessions);
     }
 
     @Bindable

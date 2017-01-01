@@ -2,7 +2,6 @@ package com.joeracosta.joe.plexpymonitor.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.joeracosta.joe.plexpymonitor.events.CurrentPlexActivityEvent;
-import com.joeracosta.joe.plexpymonitor.network.PlexPyAPI;
 import com.joeracosta.joe.plexpymonitor.network.PyAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by jacosta on 12/31/16.
@@ -52,8 +50,8 @@ public class CurrentPlexActivity implements Serializable {
 
             public class Session implements Serializable {
 
-                @SerializedName("title")
-                String title;
+                @SerializedName("full_title")
+                String fullTitle;
 
                 @SerializedName("user")
                 String user;
@@ -67,8 +65,8 @@ public class CurrentPlexActivity implements Serializable {
                 @SerializedName("user_thumb")
                 String userThumbUrl;
 
-                public String getTitle() {
-                    return title;
+                public String getFullTitle() {
+                    return fullTitle;
                 }
 
                 public String getUser() {
