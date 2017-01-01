@@ -1,8 +1,11 @@
 package com.joeracosta.joe.plexpymonitor.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.joeracosta.joe.plexpymonitor.events.CurrentPlexActivityEvent;
 import com.joeracosta.joe.plexpymonitor.network.PlexPyAPI;
 import com.joeracosta.joe.plexpymonitor.network.PyAPI;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -23,7 +26,11 @@ public class CurrentPlexActivity {
         return response.result.equals("success");
     }
 
-    private class Response {
+    public ArrayList<Response.Data.Session> getSessions(){
+        return response.data.sessions;
+    }
+
+    public class Response {
 
         @SerializedName("message")
         String message;
@@ -34,7 +41,7 @@ public class CurrentPlexActivity {
         @SerializedName("result")
         String result;
 
-        private class Data {
+        public class Data {
 
             @SerializedName("stream_count")
             int streamCount;
@@ -42,7 +49,7 @@ public class CurrentPlexActivity {
             @SerializedName("sessions")
             ArrayList<Session> sessions;
 
-            private class Session {
+            public class Session {
 
                 @SerializedName("title")
                 String title;
@@ -58,6 +65,26 @@ public class CurrentPlexActivity {
 
                 @SerializedName("user_thumb")
                 String userThumbUrl;
+
+                public String getTitle() {
+                    return title;
+                }
+
+                public String getUser() {
+                    return user;
+                }
+
+                public String getArtUrl() {
+                    return artUrl;
+                }
+
+                public String getThumbUrl() {
+                    return thumbUrl;
+                }
+
+                public String getUserThumbUrl() {
+                    return userThumbUrl;
+                }
             }
 
         }
@@ -68,12 +95,12 @@ public class CurrentPlexActivity {
         PyAPI.getPlexPyApi().getCurrentActivity().enqueue(new Callback<CurrentPlexActivity>() {
             @Override
             public void onResponse(Call<CurrentPlexActivity> call, retrofit2.Response<CurrentPlexActivity> response) {
-
+                EventBus.getDefault().post(new CurrentPlexActivityEvent(response.body()));
             }
 
             @Override
             public void onFailure(Call<CurrentPlexActivity> call, Throwable t) {
-
+                EventBus.getDefault().post(new CurrentPlexActivityEvent(false));
             }
         });
     }

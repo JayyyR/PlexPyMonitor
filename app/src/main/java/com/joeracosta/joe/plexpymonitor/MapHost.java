@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.joeracosta.joe.plexpymonitor.events.AuthResponseEvent;
+import com.joeracosta.joe.plexpymonitor.network.PyAPI;
 import com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen;
 import com.joeracosta.joe.plexpymonitor.view.Host;
 import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
@@ -29,10 +30,12 @@ public class MapHost extends AppCompatActivity implements Host {
 
 
         //temp MEOW
+        /*
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
+        */
         //
 
         mMap = ViewMap.create((ViewGroup) findViewById(R.id.app_content));
@@ -45,6 +48,12 @@ public class MapHost extends AppCompatActivity implements Host {
             if (!authenticated()){
                 mMap.show(R.id.userdetails_screen, new UserDetailsScreen.Factory());
             } else {
+
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                PyAPI.initialize(sharedPref.getString(getString(R.string.auth_key_key), ""),
+                        sharedPref.getString(getString(R.string.ip_address_key), ""),
+                        sharedPref.getString(getString(R.string.port_key), ""));
+
                 mMap.show(R.id.current_activity_screen, new CurrentPlexActivityScreen.Factory());
             }
 

@@ -11,6 +11,7 @@
 
     <com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen
         android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
         android:layout_height="match_parent">
 
         <FrameLayout
@@ -28,6 +29,7 @@
 
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/session_list"
             android:visibility="@{viewModel.contentVisibility}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

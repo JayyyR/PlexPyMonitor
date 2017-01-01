@@ -103,11 +103,10 @@ public class UserDetailsViewModel extends BaseObservable {
 
     @Subscribe
     public void onAuthEvent(AuthResponseEvent event){
-        mIsLoading = false;
-        notifyChange();
-
         if (!event.authSuccess){
             mView.notifyUser(R.string.authenication_failed);
+            mIsLoading = false;
+            notifyChange();
         }
     }
 
