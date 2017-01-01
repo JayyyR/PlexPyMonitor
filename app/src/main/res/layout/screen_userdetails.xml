@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -42,6 +43,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:addTextChangedListener="@{viewModel.ipWatcher}"
                     android:textColor="@color/textColor" />
 
             </LinearLayout>
@@ -64,6 +66,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:addTextChangedListener="@{viewModel.portWatcher}"
                     android:textColor="@color/textColor" />
 
             </LinearLayout>
@@ -86,6 +89,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:addTextChangedListener="@{viewModel.authKeyWatcher}"
                     android:textColor="@color/textColor" />
 
             </LinearLayout>
@@ -97,7 +101,7 @@
 
                 <Button
                     style="@style/PlexButton"
-                    android:onClick="@{() -> viewModel.authenticate}"
+                    android:onClick="@{() -> viewModel.authenticate()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

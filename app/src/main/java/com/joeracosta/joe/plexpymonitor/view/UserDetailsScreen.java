@@ -2,9 +2,8 @@ package com.joeracosta.joe.plexpymonitor.view;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.Toast;
 
 import com.joeracosta.joe.plexpymonitor.R;
 import com.joeracosta.joe.plexpymonitor.databinding.ScreenUserdetailsBinding;
@@ -22,7 +21,8 @@ public class UserDetailsScreen extends Screen {
     private UserDetailsViewModel mViewModel;
     private ScreenUserdetailsBinding mBinding;
 
-    public class Factory extends ViewFactory {
+
+    public static class Factory extends ViewFactory {
 
         @Override
         public int getLayoutResource() {
@@ -38,11 +38,16 @@ public class UserDetailsScreen extends Screen {
     public void onScreenAttached() {
         super.onScreenAttached();
         mBinding = DataBindingUtil.bind(this);
-        mHost = (Host) getParent();
+        mHost = (Host) getContext();
         mHost.setAppBarTitle(getContext().getString(R.string.userdetails_title));
-        mViewModel = new UserDetailsViewModel();
+        mViewModel = new UserDetailsViewModel(this);
 
         mBinding.setViewModel(mViewModel);
+    }
+
+
+    public void notifyUser(int s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

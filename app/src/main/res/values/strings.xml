@@ -5,4 +5,5 @@
     <string name="auth_key">Auth Key</string>
     <string name="userdetails_title">Enter Details</string>
     <string name="authenticate">Authenticate</string>
+    <string name="fill_user_details">Please fill out all fields</string>
 </resources>

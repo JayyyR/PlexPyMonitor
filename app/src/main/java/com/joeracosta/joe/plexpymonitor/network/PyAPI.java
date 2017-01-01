@@ -24,8 +24,6 @@ public class PyAPI {
         mApiKey = apikey;
     }
 
-
-
     private static Retrofit getRetroFit(){
         if (mRetroFit == null){
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.joeracosta.joe.plexpymonitor.view.Host;
+import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
 import com.joeracosta.library.Map.ViewMap;
 
 public class MapHost extends AppCompatActivity implements Host {
@@ -24,7 +25,9 @@ public class MapHost extends AppCompatActivity implements Host {
             map.rebuildFromBundle(savedInstanceState, VIEW_MAP_KEY);
         } else {
 
-            //shared pref
+            //shared pref check
+
+            map.show(R.id.userdetails_screen, new UserDetailsScreen.Factory());
 
         }
     }
