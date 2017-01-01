@@ -2,13 +2,9 @@ package com.joeracosta.joe.plexpymonitor.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
-import java.io.IOException;
-
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,13 +21,14 @@ public class PyAPI {
     private static String sPort;
     private static PlexPyAPI sPlexPyApi;
 
-    public static void initialize(String apikey, String ip, String port){
+
+    public static void initialize(String apikey, String ip, String port) {
         sAuthKey = apikey;
         sIPAddress = ip;
         sPort = port;
     }
 
-    public static void clear(){
+    public static void clear() {
         sAuthKey = null;
         sPort = null;
         sIPAddress = null;
@@ -39,23 +36,23 @@ public class PyAPI {
         sRetroFit = null;
     }
 
-    public static PlexPyAPI getPlexPyApi(){
+    public static PlexPyAPI getPlexPyApi() {
 
-        if (sPlexPyApi == null){
+        if (sPlexPyApi == null) {
             sPlexPyApi = getRetroFit().create(PlexPyAPI.class);
         }
 
         return sPlexPyApi;
     }
 
-    private static Retrofit getRetroFit(){
-        if (sRetroFit == null){
+    private static Retrofit getRetroFit() {
+        if (sRetroFit == null) {
 
-            if (sAuthKey == null || sPort == null || sIPAddress == null){
+            if (sAuthKey == null || sPort == null || sIPAddress == null) {
                 throw new RuntimeException("Must set ip, auth, and port");
             }
 
-            sBaseUrl = "http://" + sIPAddress + ":" + sPort +"/api/v2/";
+            sBaseUrl = "http://" + sIPAddress + ":" + sPort + "/api/v2/";
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addNetworkInterceptor(new StethoInterceptor())
@@ -76,5 +73,16 @@ public class PyAPI {
         }
 
         return sRetroFit;
+    }
+
+
+    public static String getImagePrefix() {
+        return sBaseUrl +
+                "?apikey=" +
+                sAuthKey +
+                "&cmd=pms_image_proxy" +
+                "&width=500&height=280" +
+                "&fallback=art" +
+                "&img=";
     }
 }

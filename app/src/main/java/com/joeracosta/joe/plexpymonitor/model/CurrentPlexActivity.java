@@ -14,6 +14,7 @@ import retrofit2.Callback;
 
 /**
  * Created by jacosta on 12/31/16.
+ * POJO for plex sessions
  */
 
 public class CurrentPlexActivity implements Serializable {
@@ -50,8 +51,8 @@ public class CurrentPlexActivity implements Serializable {
 
             public class Session implements Serializable {
 
-                @SerializedName("full_title")
-                String fullTitle;
+                @SerializedName("title")
+                String title;
 
                 @SerializedName("user")
                 String user;
@@ -65,8 +66,15 @@ public class CurrentPlexActivity implements Serializable {
                 @SerializedName("user_thumb")
                 String userThumbUrl;
 
-                public String getFullTitle() {
-                    return fullTitle;
+                @SerializedName("grandparent_title")
+                String grandParentTitle;
+
+                public String getGrandParentTitle() {
+                    return grandParentTitle;
+                }
+
+                public String getTitle() {
+                    return title;
                 }
 
                 public String getUser() {

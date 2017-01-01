@@ -2,15 +2,19 @@ package com.joeracosta.joe.plexpymonitor.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.joeracosta.joe.plexpymonitor.BR;
+import com.joeracosta.joe.plexpymonitor.R;
 import com.joeracosta.joe.plexpymonitor.databinding.ScreenCurrentActivityBinding;
 import com.joeracosta.joe.plexpymonitor.events.CurrentPlexActivityEvent;
 import com.joeracosta.joe.plexpymonitor.model.CurrentPlexActivity;
 import com.joeracosta.joe.plexpymonitor.view.CurrentPlexActivityScreen;
 import com.joeracosta.joe.plexpymonitor.view.adapters.CurrentSessionsAdapter;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
