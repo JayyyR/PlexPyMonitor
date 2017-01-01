@@ -16,40 +16,59 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PyAPI {
 
-    private static String mBaseUrl;
-    private static Retrofit mRetroFit;
-    private static String mApiKey;
+    private static String sBaseUrl;
+    private static Retrofit sRetroFit;
+    private static String sAuthKey;
+    private static String sIPAddress;
+    private static String sPort;
+    private static PlexPyAPI sPlexPyApi;
 
-    public static void initialize(String apikey){
-        mApiKey = apikey;
+    public static void initialize(String apikey, String ip, String port){
+        sAuthKey = apikey;
+        sIPAddress = ip;
+        sPort = port;
+    }
+
+    public static void clear(){
+        sAuthKey = null;
+        sPort = null;
+        sIPAddress = null;
+        sRetroFit = null;
+    }
+
+    public static PlexPyAPI getPlexPyApi(){
+
+        if (sPlexPyApi == null){
+            sPlexPyApi = getRetroFit().create(PlexPyAPI.class);
+        }
+
+        return sPlexPyApi;
     }
 
     private static Retrofit getRetroFit(){
-        if (mRetroFit == null){
+        if (sRetroFit == null){
 
-            if (mApiKey == null){
-                throw new RuntimeException("Must set apikey");
+            if (sAuthKey == null || sPort == null || sIPAddress == null){
+                throw new RuntimeException("Must set ip, auth, and port");
             }
 
-            OkHttpClient client = new OkHttpClient();
+            sBaseUrl = "http://" + sIPAddress + ":" + sPort +"/api/v2/";
 
-            client.interceptors().add(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    HttpUrl url = request.url().newBuilder().addQueryParameter("mApiKey", mApiKey).build();
-                    request = request.newBuilder().url(url).build();
-                    return chain.proceed(request);
-                }
-            });
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(
+                            chain -> {
+                                Request request = chain.request();
+                                HttpUrl url = request.url().newBuilder().addQueryParameter("sAuthKey", sAuthKey).build();
+                                request = request.newBuilder().url(url).build();
+                                return chain.proceed(request);
+                            }).build();
 
-            mRetroFit = new Retrofit.Builder()
-                    .baseUrl(mBaseUrl)
+            sRetroFit = new Retrofit.Builder()
+                    .baseUrl(sBaseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
         }
 
-        return mRetroFit;
+        return sRetroFit;
     }
 }

@@ -6,4 +6,9 @@
     <string name="userdetails_title">Enter Details</string>
     <string name="authenticate">Authenticate</string>
     <string name="fill_user_details">Please fill out all fields</string>
+
+    <string name="ip_address_key">shared_pref_ip</string>
+    <string name="port_key">shared_pref_port</string>
+    <string name="auth_key_key">shared_pref_auth</string>
+    <string name="authenication_failed">Authentication failed. Please verify you have entered the correct values.</string>
 </resources>

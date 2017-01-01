@@ -21,7 +21,6 @@ public class UserDetailsScreen extends Screen {
     private UserDetailsViewModel mViewModel;
     private ScreenUserdetailsBinding mBinding;
 
-
     public static class Factory extends ViewFactory {
 
         @Override
@@ -48,6 +47,12 @@ public class UserDetailsScreen extends Screen {
 
     public void notifyUser(int s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
+
+    public void saveDetails(String ip, String port, String authKey) {
+        mHost.storeIp(ip);
+        mHost.storePort(port);
+        mHost.storeAuth(authKey);
     }
 
     @Override

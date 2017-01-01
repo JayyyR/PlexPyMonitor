@@ -16,16 +16,20 @@ public class ArnoldResponse {
         return response;
     }
 
+    public boolean isSuccess() {
+        return response.result.equals("success");
+    }
+
     private class Response{
 
         @SerializedName("message")
-        String message;
+        public String message;
 
         @SerializedName("data")
-        String data;
+        public String data;
 
         @SerializedName("result")
-        String result;
+        public String result;
 
     }
 }
