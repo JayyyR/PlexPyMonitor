@@ -1,6 +1,10 @@
 # PlexPyMonitor
 Android app for monitoring plex stats through PlexPy
 
+Uses the PlexPy API
+https://github.com/JonnyWong16/plexpy
+
+
 License
 -----
 
