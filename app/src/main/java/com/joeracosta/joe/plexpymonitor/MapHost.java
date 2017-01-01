@@ -29,7 +29,7 @@ public class MapHost extends AppCompatActivity implements Host {
         setContentView(R.layout.activity_map_host);
 
 
-        //temp MEOW
+        //temp
         /*
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
