@@ -7,14 +7,13 @@ import android.text.TextWatcher;
 import android.view.View;
 
 import com.joeracosta.joe.plexpymonitor.R;
-import com.joeracosta.joe.plexpymonitor.model.ArnoldResponse;
-import com.joeracosta.joe.plexpymonitor.network.PyAPI;
+import com.joeracosta.joe.plexpymonitor.events.AuthResponseEvent;
+import com.joeracosta.joe.plexpymonitor.model.AuthenticationModel;
 import com.joeracosta.joe.plexpymonitor.view.TextWatcherAdapter;
 import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by jacosta on 12/31/16.
@@ -29,13 +28,13 @@ public class UserDetailsViewModel extends BaseObservable {
     private UserDetailsScreen mView;
     private boolean mIsLoading;
 
-    public UserDetailsViewModel(UserDetailsScreen screen){
+    public UserDetailsViewModel(UserDetailsScreen screen) {
         mView = screen;
+        EventBus.getDefault().register(this);
     }
 
-    public void authenticate(){
-
-        if (mAuthKey == null || mIPAddress == null || mPort == null){
+    public void authenticate() {
+        if (mAuthKey == null || mIPAddress == null || mPort == null) {
             mView.notifyUser(R.string.fill_user_details);
             return;
         }
@@ -43,38 +42,10 @@ public class UserDetailsViewModel extends BaseObservable {
         mIsLoading = true;
         notifyChange();
 
-        PyAPI.initialize(mAuthKey, mIPAddress, mPort);
-
-        PyAPI.getPlexPyApi().testAPI().enqueue(new Callback<ArnoldResponse>() {
-            @Override
-            public void onResponse(Call<ArnoldResponse> call, Response<ArnoldResponse> response) {
-
-                if (response.body().isSuccess()){
-                    mView.saveDetails(mIPAddress, mPort, mAuthKey);
-                } else {
-
-                    mIsLoading = false;
-                    notifyChange();
-
-                    mView.notifyUser(R.string.authenication_failed);
-                    PyAPI.clear();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArnoldResponse> call, Throwable t) {
-
-                mIsLoading = false;
-                notifyChange();
-
-                mView.notifyUser(R.string.authenication_failed);
-                PyAPI.clear();
-            }
-        });
-
+        AuthenticationModel.testAuthentication(mIPAddress, mPort, mAuthKey);
     }
 
-    public TextWatcher ipWatcher = new TextWatcherAdapter(){
+    public TextWatcher ipWatcher = new TextWatcherAdapter() {
         @Override
         public void afterTextChanged(Editable s) {
             super.afterTextChanged(s);
@@ -82,7 +53,7 @@ public class UserDetailsViewModel extends BaseObservable {
         }
     };
 
-    public TextWatcher portWatcher = new TextWatcherAdapter(){
+    public TextWatcher portWatcher = new TextWatcherAdapter() {
         @Override
         public void afterTextChanged(Editable s) {
             super.afterTextChanged(s);
@@ -90,7 +61,7 @@ public class UserDetailsViewModel extends BaseObservable {
         }
     };
 
-    public TextWatcher authKeyWatcher = new TextWatcherAdapter(){
+    public TextWatcher authKeyWatcher = new TextWatcherAdapter() {
         @Override
         public void afterTextChanged(Editable s) {
             super.afterTextChanged(s);
@@ -99,14 +70,45 @@ public class UserDetailsViewModel extends BaseObservable {
     };
 
     @Bindable
-    public int getLoadingVisibility(){
+    public int getLoadingVisibility() {
         return mIsLoading ? View.VISIBLE : View.GONE;
     }
 
     @Bindable
-    public int getContentVisibility(){
+    public int getContentVisibility() {
         return !mIsLoading ? View.VISIBLE : View.GONE;
     }
 
+    public String getIP() {
+        return mIPAddress;
+    }
+
+    public String getAuth() {
+        return mAuthKey;
+    }
+
+    public String getPort() {
+        return mPort;
+    }
+
+    public void setData(String ip, String port, String auth) {
+        mIPAddress = ip;
+        mPort = port;
+        mAuthKey = auth;
+    }
+
+    public void destroy(){
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onAuthEvent(AuthResponseEvent event){
+        mIsLoading = false;
+        notifyChange();
+
+        if (!event.authSuccess){
+            mView.notifyUser(R.string.authenication_failed);
+        }
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.joeracosta.joe.plexpymonitor.network;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -33,6 +35,7 @@ public class PyAPI {
         sAuthKey = null;
         sPort = null;
         sIPAddress = null;
+        sPlexPyApi = null;
         sRetroFit = null;
     }
 
@@ -54,13 +57,16 @@ public class PyAPI {
 
             sBaseUrl = "http://" + sIPAddress + ":" + sPort +"/api/v2/";
 
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addNetworkInterceptor(new StethoInterceptor())
+                    .addInterceptor(
                             chain -> {
                                 Request request = chain.request();
-                                HttpUrl url = request.url().newBuilder().addQueryParameter("sAuthKey", sAuthKey).build();
+                                HttpUrl url = request.url().newBuilder().addQueryParameter("apikey", sAuthKey).build();
                                 request = request.newBuilder().url(url).build();
                                 return chain.proceed(request);
-                            }).build();
+                            })
+                    .build();
 
             sRetroFit = new Retrofit.Builder()
                     .baseUrl(sBaseUrl)

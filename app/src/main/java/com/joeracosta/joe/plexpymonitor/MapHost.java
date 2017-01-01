@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import com.joeracosta.joe.plexpymonitor.events.AuthResponseEvent;
 import com.joeracosta.joe.plexpymonitor.view.Host;
 import com.joeracosta.joe.plexpymonitor.view.UserDetailsScreen;
 import com.joeracosta.library.Map.ViewMap;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class MapHost extends AppCompatActivity implements Host {
 
@@ -19,7 +23,16 @@ public class MapHost extends AppCompatActivity implements Host {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_map_host);
+
+
+        //temp MEOW
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+        //
 
         map = ViewMap.create((ViewGroup) findViewById(R.id.app_content));
 
@@ -42,6 +55,12 @@ public class MapHost extends AppCompatActivity implements Host {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     private boolean authenticated() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         return sharedPref.contains(getString(R.string.ip_address_key)) &&
@@ -57,19 +76,13 @@ public class MapHost extends AppCompatActivity implements Host {
         }
     }
 
-    @Override
-    public void storeIp(String ip) {
-        storeStringInPref(getString(R.string.ip_address_key), ip);
-    }
-
-    @Override
-    public void storePort(String port) {
-        storeStringInPref(getString(R.string.port_key), port);
-    }
-
-    @Override
-    public void storeAuth(String auth) {
-        storeStringInPref(getString(R.string.auth_key_key), auth);
+    @Subscribe
+    public void onAuthEvent(AuthResponseEvent event){
+        if (event.authSuccess){
+            storeStringInPref(getString(R.string.ip_address_key), event.ipAddress);
+            storeStringInPref(getString(R.string.port_key), event.port);
+            storeStringInPref(getString(R.string.auth_key_key), event.apiKey);
+        }
     }
 
     private void storeStringInPref(String key, String valToStore){

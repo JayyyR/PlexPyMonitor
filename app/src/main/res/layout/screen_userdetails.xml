@@ -55,7 +55,10 @@
 
 
                 <EditText
+                    android:id="@+id/ip_edittext"
                     android:layout_width="match_parent"
+                    android:inputType="number"
+                    android:digits="0123456789."
                     android:layout_height="wrap_content"
                     app:addTextChangedListener="@{viewModel.ipWatcher}"
                     android:textColor="@color/textColor" />
@@ -78,8 +81,10 @@
 
 
                 <EditText
+                    android:id="@+id/port_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     app:addTextChangedListener="@{viewModel.portWatcher}"
                     android:textColor="@color/textColor" />
 
@@ -101,7 +106,9 @@
 
 
                 <EditText
+                    android:id="@+id/auth_edittext"
                     android:layout_width="match_parent"
+                    android:inputType="text"
                     android:layout_height="wrap_content"
                     app:addTextChangedListener="@{viewModel.authKeyWatcher}"
                     android:textColor="@color/textColor" />

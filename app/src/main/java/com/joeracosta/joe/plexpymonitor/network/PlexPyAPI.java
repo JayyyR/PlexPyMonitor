@@ -1,6 +1,6 @@
 package com.joeracosta.joe.plexpymonitor.network;
 
-import com.joeracosta.joe.plexpymonitor.model.ArnoldResponse;
+import com.joeracosta.joe.plexpymonitor.model.AuthenticationModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,5 +12,5 @@ import retrofit2.http.GET;
 public interface PlexPyAPI {
 
     @GET("?cmd=arnold")
-    Call<ArnoldResponse> testAPI( );
+    Call<AuthenticationModel> testAPI();
 }
